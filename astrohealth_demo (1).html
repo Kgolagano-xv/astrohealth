@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AstroHealth | Nova Syndicate | NASA Space Apps 2026</title>
+<style>
+:root{--bg:#0B1220;--pan:#131D2E;--pan2:#0E1A2E;--line:#243350;--tx:#E6EDF7;--mut:#93A4BF;--g:#34C77B;--y:#F2C94C;--o:#F2994A;--r:#EB5757;--b:#4DA3FF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3,h4{margin:0 0 8px}h2{font-size:26px}h3{font-size:18px}h4{font-size:14px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+p{margin:6px 0}a{color:var(--b)}
+header{padding:14px 18px;background:var(--pan);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.brand b{font-size:20px}.brand span{color:var(--mut);font-size:13px;display:block}
+.mock{background:#3A2A14;color:var(--o);font-weight:700;font-size:12px;padding:6px 10px;border-radius:8px}
+nav.top{display:flex;flex-wrap:wrap;gap:6px;padding:10px 18px;background:var(--bg);position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line)}
+button,select{font:inherit;color:var(--tx)}
+.tab{min-height:40px;padding:0 14px;border-radius:20px;border:1px solid var(--line);background:var(--pan);cursor:pointer;font-weight:600}
+.tab[aria-selected=true]{background:var(--b);color:#06101F;border-color:var(--b)}
+.btn{min-height:38px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:var(--pan2);cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--b)}.btn.red{background:var(--r);color:#fff;border-color:var(--r)}
+select{min-height:38px;border-radius:8px;border:1px solid var(--line);background:var(--pan2);padding:0 8px}
+main{max-width:1180px;margin:0 auto;padding:16px}
+section[hidden]{display:none}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.g5{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.card{background:var(--pan);border:1px solid var(--line);border-radius:12px;padding:14px}
+.card.hi{border-color:var(--b)}.mut{color:var(--mut)}.small{font-size:12px}
+.chip{display:inline-block;padding:3px 10px;border-radius:12px;background:var(--line);font-size:12px;font-weight:600;margin:2px 4px 2px 0}
+.chip.sim{background:#3A2A14;color:var(--o)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.bd{font-weight:700}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px;background:var(--pan);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+.status{font-size:12px;color:var(--mut);margin:6px 0 10px}
+.sub{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+.sub .tab{min-height:34px;font-size:14px;border-radius:8px}
+.al{border-left:5px solid var(--c)}
+.m{background:var(--pan);border:1px solid var(--line);border-radius:10px;padding:10px}
+.m b{display:block;font-size:20px}.m span{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mut);font-weight:600}
+.org{display:flex;align-items:center;gap:6px;width:100%;text-align:left;padding:7px 9px;margin:3px 0;border-radius:8px;border:1px solid var(--line);background:var(--pan2);cursor:pointer}
+.org[aria-pressed=true]{border-color:#fff}
+svg text{font-family:inherit}
+.hit{fill:transparent;cursor:pointer}.hit:hover{fill:rgba(255,255,255,.08)}
+@keyframes pulse{0%{opacity:1;stroke-width:3}100%{opacity:.15;stroke-width:9}}
+.pulse{animation:pulse 1s ease-in-out infinite alternate;fill:none;stroke:var(--r)}
+@keyframes flash{50%{background:#7a1f1f}}
+#redbar{display:none;position:sticky;top:58px;z-index:19;background:var(--r);color:#fff;padding:10px 18px;font-weight:700;animation:flash 1s infinite}
+#toast{position:fixed;right:14px;bottom:14px;max-width:340px;background:var(--pan);border:1px solid var(--b);border-radius:10px;padding:10px 14px;display:none;z-index:30}
+.lane{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.step{flex:1 1 150px;position:relative}
+.big{font-size:34px;font-weight:700}
+.hero{background:linear-gradient(135deg,#0E1A2E,#14305A);border:1px solid var(--line);border-radius:14px;padding:26px;margin-bottom:14px}
+.hero h1{font-size:44px}
+ul.clean{padding-left:18px;margin:6px 0}ul.clean li{margin:4px 0}
+code,pre{background:#0A1426;border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--g);font-family:Consolas,monospace}
+.countbar{height:14px;background:var(--line);border-radius:7px;overflow:hidden}.countbar i{display:block;height:100%;background:var(--r)}
+.moods{display:flex;flex-wrap:wrap;gap:8px}.mood{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--pan2);cursor:pointer;font-weight:600}.mood[aria-pressed=true]{border-color:#fff;background:var(--line)}
+.sos{border:2px solid var(--b);background:linear-gradient(135deg,#0E1A2E,#14305A)}
+.breath{width:130px;height:130px;border-radius:50%;margin:10px auto;border:3px solid var(--b);display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;transition:transform 4s ease-in-out;background:rgba(77,163,255,.12)}
+.breath.in{transform:scale(1.35)}.breath.out{transform:scale(.85);transition-duration:6s}
+.cgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.ccard{border-left:6px solid var(--c)}.ccard .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.hm td,.hm th{padding:5px 8px;white-space:nowrap}.hm td.c{border-left:3px solid var(--c)}.scroll{overflow-x:auto}
+.org-dots{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--mut)}
+@media(max-width:600px){.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><b>ASTROHEALTH</b><span>Nova Syndicate | NASA Space Apps Challenge 2026</span></div>
+ <div><span class="mock">MOCK DATA - DEMO ONLY</span> <span class="chip">Research prototype, not a medical device</span></div>
+</header>
+<div id="redbar"></div>
+<nav class="top" role="tablist" id="topnav">
+ <button class="tab" role="tab" data-act="sec" data-v="demo" aria-selected="true">Live demo</button>
+ <button class="tab" role="tab" data-act="sec" data-v="crew" aria-selected="false">Crew overview</button>
+ <button class="tab" role="tab" data-act="sec" data-v="evi" aria-selected="false">Evidence and limits</button>
+</nav>
+<main>
+<section id="s-demo">
+ <div class="bar">
+  <label>Astronaut <select id="who"></select></label>
+  <label><input type="checkbox" id="live" checked> Live simulation</label>
+  <label>Speed <select id="speed"><option value="5">1 tick / 5 s</option><option value="1">1 tick / 1 s</option></select></label>
+  <button class="btn" data-act="adv">Advance 1 hour</button>
+  <button class="btn red" data-act="emerg">Simulate Emergency (D. Okafor)</button>
+  <label>Sensor <select id="grp"><option value="wearable">Wearable / smart shirt</option><option value="pulse_ox">Pulse oximeter (SpO2)</option></select></label>
+  <button class="btn" data-act="drop">Drop</button><button class="btn" data-act="restore">Restore</button>
+  <button class="btn" data-act="conn" id="connbtn">Connection: LIVE</button>
+  <label><input type="checkbox" id="snd"> Alarm sound</label>
+  <button class="btn" data-act="reset">Reset</button>
+ </div>
+ <div class="status" id="statusline"></div>
+ <div class="sub" id="subnav"></div>
+ <div id="panel"></div>
+</section>
+
+<section id="s-crew" hidden><div id="crewpanel"></div></section>
+
+<section id="s-evi" hidden>
+ <h2>Crew buddy alerts: who is told what</h2><p class="mut">If a crewmate declines, the people nearby can help, without exposing private health data.</p>
+ <div class="grid g2"><div class="card"><table>
+  <tr><td><span class="dot" style="background:var(--g)"></span><b>GREEN</b></td><td>Nobody. All systems nominal.</td></tr>
+  <tr><td><span class="dot" style="background:var(--y)"></span><b>YELLOW</b></td><td>The astronaut only: a private nudge.</td></tr>
+  <tr><td><span class="dot" style="background:var(--o)"></span><b>ORANGE</b></td><td>Astronaut and crew medical officer. A buddy gets a gentle "check in today" note with no medical details.</td></tr>
+  <tr><td><span class="dot" style="background:var(--r)"></span><b>RED</b></td><td>Whole crew alarm plus Mission Control (simulated). The nearest crewmate is directed to respond with the checklist.</td></tr>
+  <tr><td><span class="dot" style="background:var(--b)"></span><b>CHECK-IN FLAG</b></td><td>Crew medical officer only. Never shared with the crew unless the astronaut chooses.</td></tr></table></div>
+  <div class="card" style="border-color:var(--o)"><span class="chip" style="background:var(--o);color:#111">BUDDY CHECK</span><h3>Please check in on D. Okafor today.</h3><p>He may be unwell. Keep an eye on him and tell the crew medical officer if you are worried. No medical details are shared.</p><button class="btn" data-act="toast" data-m="Thanks. Check-in logged (simulated).">I checked in</button>
+  <h4 style="margin-top:12px">Rules we propose</h4><ul class="clean"><li>Agreed by the crew before the mission.</li><li>Minimum information, and the astronaut can see who was told.</li><li>Why tiered: if every decline is shared, astronauts may hide symptoms or avoid sensors (National Academies, 2001).</li><li>To be agreed with flight surgeons and NASA medical-privacy rules.</li></ul>
+  <p class="mut small">Mockup, MOCK DATA. A design proposal to test, not an existing NASA procedure.</p></div></div>
+ <h2 style="margin-top:18px">How we are different</h2><p class="mut">We add a layer on top of what NASA already does. We do not replace it.</p>
+ <div class="grid g2">
+  <div class="card" style="border-color:var(--y)"><h3 style="color:var(--y)">What the public record shows</h3><ul class="clean"><li>Astronauts often eat roughly 20-30% fewer calories than they need, and lose weight.</li><li>Weight loss is linked to extra bone and muscle loss. Bone loss is about 1-1.5% per month.</li><li>Ground doctors review weight and counsel astronauts. Crew log food in an app.</li></ul></div>
+  <div class="card" style="border-color:var(--g)"><h3 style="color:var(--g)">What AstroHealth adds</h3><ul class="clean"><li>Automatic data where possible, so tired astronauts do not have to log everything by hand.</li><li>One combined picture: vitals, sleep, stress, isolation, diet, exercise and weight.</li><li>Personal baselines and trends that warn early during the mission, not at the end.</li><li>Plain-language what / why / what to do, for the astronaut and the ground team.</li></ul></div></div>
+ <p class="mut small">Based on public NASA nutrition-science reports. NASA's current internal tools may already do some of this; we add the combining and early-warning layer.</p>
+ <h2 style="margin-top:18px">How it helps before landing</h2><p class="mut">The goal: catch avoidable decline while there is still time to act.</p>
+ <div class="grid g4"><div class="card"><h4 style="color:var(--b)">1 Detect early</h4>Energy gap, weight trend, sleep and stress drift</div><div class="card"><h4 style="color:var(--b)">2 Explain and nudge</h4>Plain-language reason and a suggested next step</div><div class="card"><h4 style="color:var(--b)">3 Track the response</h4>Did intake, sleep and weight recover?</div><div class="card"><h4 style="color:var(--b)">4 Landing handoff</h4>Summary report for the flight surgeon</div></div>
+ <div class="grid g2" style="margin-top:12px"><div class="card" style="border-color:var(--g)"><h3 style="color:var(--g)">What it can do</h3><p>Catch avoidable decline sooner, such as under-eating, and flag poor sleep, stress and isolation early. Weight loss is linked to extra bone and muscle loss, so acting earlier may help.</p></div><div class="card" style="border-color:var(--o)"><h3 style="color:var(--o)">What it cannot do</h3><p>Stop the bone and muscle loss caused by microgravity itself. Whether earlier nudges reduce losses is our hypothesis, tested on simulated crews, not a proven result.</p></div></div>
+ <h2 style="margin-top:18px">Limits and next steps</h2>
+ <div class="grid g2"><div class="card"><h3 style="color:var(--o)">Limits we state openly</h3><ul class="clean"><li>All data is simulated. No real NASA astronaut data is used.</li><li>A research prototype, not a medical device. It flags changes for people to review.</li><li>Thresholds are placeholders until checked against published sources.</li><li>Stress, isolation, mood, diet intake and some blood markers are simulated or estimated from proxies, not measured directly.</li><li>Monitoring cannot stop the bone and muscle loss caused by microgravity itself.</li></ul></div>
+ <div class="card"><h3 style="color:var(--g)">Next steps</h3><ul class="clean"><li>Read the official challenge statement and confirm the data provided.</li><li>Build the Python prototype: simulated crew, baselines, four alert levels, health score, plus Mind and Sleep and Nutrition tabs.</li><li>Measure detection delay and false alerts on simulated events.</li><li>Future work: connect real sensor feeds and NASA systems, with medical review.</li></ul></div></div>
+ <p><b style="color:var(--b)">Nova Syndicate: evidence first, claims second.</b></p>
+ <h2 style="margin-top:18px">Sources behind the facts</h2><p class="mut">Public reports and articles used in this deck. Check the originals before quoting numbers.</p>
+ <div class="card"><table>
+  <tr><td>Astronauts eat roughly 20-30% fewer calories than needed and lose weight.</td><td class="mut">Science News, "The Zero Gravity Diet"; npj Microgravity nutrition review</td></tr>
+  <tr><td>Weight loss is linked to extra bone and muscle loss.</td><td class="mut">Popular Science interview with a NASA nutrition scientist</td></tr>
+  <tr><td>Bone loss is about 1-1.5% per month in flight.</td><td class="mut">Nutrition and spaceflight review (PMC, 2022); "Nutrition in the space station era"</td></tr>
+  <tr><td>Crew log food in an app; ground doctors counsel on weight.</td><td class="mut">Popular Science; Science News</td></tr>
+  <tr><td>Sleep is measured on the ISS with wrist actigraphy (movement and light).</td><td class="mut">NASA Sleep-Long study (Phys.org summary)</td></tr>
+  <tr><td>Astronauts sleep just under 6 hours on average, against an 8.5-hour guideline.</td><td class="mut">Barger et al. study of 85 astronauts (news summary)</td></tr>
+  <tr><td>Sleep data could stream automatically, with no astronaut time.</td><td class="mut">NASA-funded STARwatch project record</td></tr>
+  <tr><td>Astronauts may under-report symptoms; medical data is tightly held.</td><td class="mut">National Academies, "Safe Passage" (2001); NASA statement (2007)</td></tr>
+  <tr><td>Autonomous monitoring matters when communication delay limits ground support.</td><td class="mut">SpaceDaily, January 2026</td></tr></table>
+  <p class="mut small">Some sources are older reports or news summaries. Policies and numbers may have changed.</p></div>
+</section>
+</main>
+<div id="toast"></div>
+<script>
+/* AstroHealth engine: the same logic and placeholder thresholds as the Python app (config.py, mock_data.py, analysis.py).
+   ALL DATA IS SIMULATED. Research prototype, not a medical device. */
+const LV=["GREEN","YELLOW","ORANGE","RED"];
+const WORD={GREEN:"NORMAL",YELLOW:"WATCH",ORANGE:"WARNING",RED:"CRITICAL",OFFLINE:"SENSOR OFFLINE"};
+const COLOR={GREEN:"#34C77B",YELLOW:"#F2C94C",ORANGE:"#F2994A",RED:"#EB5757",OFFLINE:"#6B7280"};
+const AST=["Cmdr A. Mokoena","Dr. B. Smith","C. Tanaka","D. Okafor"];
+const BUDDY={"Cmdr A. Mokoena":"Dr. B. Smith","Dr. B. Smith":"Cmdr A. Mokoena","C. Tanaka":"D. Okafor","D. Okafor":"C. Tanaka"};
+const MIN=6e4,HOUR=36e5,DAY=864e5,TICK=5,PERSIST=6,ZW=1.5,ZS=4.0,CTX_AFTER=30,INTAKE_LOW=0.9,INTAKE_DAYS=3,MASS_ORANGE=5,RED_CAP=30,MISSION_DAY=87;
+const MINSD={hr:3,hrv:4,bp_sys:4,bp_dia:3,spo2:.8,resp:1.2,temp:.15,sleep_hours:.5,stress:4,contact_min:15,reaction_ms:8,hydration_pct:3,intake_ratio:.03,body_mass_kg:.4,radiation_msv:.08};
+const DIR={hr:1,hrv:-1,bp_sys:0,spo2:-1,resp:1,temp:0,sleep_hours:-1,stress:1,contact_min:-1,reaction_ms:1,hydration_pct:-1,intake_ratio:-1,body_mass_kg:-1,radiation_msv:1};
+const CRIT={spo2_orange:90,spo2_red:85,hr_orange:150,hr_low:40,temp_high:39.5,temp_low:35,bp_sys_low:85,red_spo2:90,red_hr:130,red_bp_drop:10};
+const WEIGHTS={hr:12,hrv:7,bp_sys:10,spo2:12,resp:8,temp:5,sleep_hours:12,stress:10,hydration_pct:7,intake_ratio:7,contact_min:3,reaction_ms:2,body_mass_kg:3,radiation_msv:2};
+const INFO={
+ hr:["Heart rate","bpm","The heart is working harder than this astronaut’s normal. Common causes: stress, poor sleep, dehydration or illness.","Rest, drink fluids, and re-check in 30 minutes."],
+ hrv:["Heart rate variability","ms","Lower variability can be an early sign of stress or fatigue.","Rest and review sleep and workload."],
+ bp_sys:["Systolic blood pressure","mmHg","Blood pressure is away from this astronaut’s normal.","Sit or lie down, re-check, and tell the crew medical officer if it persists."],
+ spo2:["Blood oxygen (SpO2)","%","Oxygen in the blood is lower than this astronaut’s normal.","Check cabin CO2 and air, rest, re-check; alert the crew medical officer if it keeps falling."],
+ resp:["Breathing rate","/min","Breathing is faster than normal, which can reflect low oxygen, high CO2 or stress.","Check cabin CO2, slow the breathing, and re-check in 30 minutes."],
+ temp:["Body temperature","C","Temperature is away from this astronaut’s normal.","Rest, hydrate and re-check; tell the crew medical officer if it persists."],
+ sleep_hours:["Sleep","h/night","Sleep debt builds up and can affect mood, reaction time and mistakes.","Protect the next sleep period and review the workload."],
+ stress:["Stress score","/100","Stress is rising compared with baseline (estimated from HRV, sleep and workload).","Consider a lighter workload and a check-in."],
+ contact_min:["Time with crew or family","min/day","Less contact than usual can be an early sign of isolation.","Schedule a call or a shared meal."],
+ reaction_ms:["Reaction time","ms","Slower reactions can go with fatigue.","Avoid critical tasks when possible and review sleep."],
+ hydration_pct:["Hydration","%","Hydration is below this astronaut’s normal.","Drink fluids with electrolytes (amount set by the crew medical officer)."],
+ intake_ratio:["Food intake vs need","","Eating less than the body needs leads to weight loss and can add bone and muscle loss.","Add an extra calorie-dense meal and tell the crew medical officer."],
+ body_mass_kg:["Body mass","kg","Body mass is trending down, which can include muscle and bone loss.","Review food intake and keep up exercise; tell the crew medical officer."],
+ radiation_msv:["Radiation dose","mSv/day","Today’s dose is above this astronaut’s usual.","Follow Mission Control radiation guidance."]};
+const FAST=["hr","hrv","bp_sys","spo2","resp","temp"];
+const SLOW=["sleep_hours","stress","contact_min","reaction_ms","hydration_pct","intake_ratio","body_mass_kg","radiation_msv"];
+const CHECKIN=["sleep_hours","stress","contact_min","reaction_ms"];
+const ORGANS={brain:["stress","sleep_hours","reaction_ms"],heart:["hr","hrv"],lungs:["spo2","resp"],blood:["bp_sys"],stomach:["hydration_pct","intake_ratio"],muscles:["body_mass_kg"],bones:["radiation_msv"],skin:["temp"]};
+const SENSORS={wearable:["hr","hrv","bp_sys","bp_dia","resp","temp"],pulse_ox:["spo2"]};
+const ASSUMPTIONS=[["Sleep averages just under 6 h in flight (guideline 8.5 h)","Barger et al. study (news summary)"],["Astronauts eat roughly 20-30% fewer calories than needed","Science News; npj Microgravity nutrition review"],["Bone loss about 1-1.5% per month in flight","Nutrition and spaceflight reviews"],["Wrist actigraphy measures sleep on the ISS","NASA Sleep-Long study (Phys.org summary)"],["Resting heart rate 60-75 bpm, SpO2 about 97%, breathing 14/min, temp 36.7 C","General adult ranges - TO VERIFY"],["Radiation about 0.5 mSv/day","ASSUMED - TO VERIFY"],["Z_WATCH 1.5, Z_STRONG 4.0, persistence 30 min, intake rule 10% for 3 days","PLACEHOLDER rules chosen by the team"],["RED pattern: SpO2 below 90 AND HR above 130 AND BP falling 10+ mmHg","PLACEHOLDER from the pitch deck"],["Crew names, events and all readings","SIMULATED"]];
+const B0={hr:66,hrv:62,bp_sys:116,bp_dia:74,spo2:97.6,resp:14,temp:36.7,sleep:7.1,deep:18,stress:38,contact:150,reaction:312,need:2800,protein:90,hydration:85,mass:79.5,rad:.5,activity:90};
+const PROF={"Cmdr A. Mokoena":{...B0},"Dr. B. Smith":{...B0,hr:70,hrv:58,bp_sys:112,bp_dia:72,spo2:97.4,temp:36.6,sleep:7,deep:17,stress:35,contact:130,reaction:305,need:2500,protein:85,hydration:86,mass:68.2,activity:80},
+ "C. Tanaka":{...B0,hr:62,hrv:66,bp_sys:114,bp_dia:73,spo2:97.8,resp:13,temp:36.8,sleep:7.3,deep:19,stress:32,contact:160,reaction:298,need:2700,protein:95,mass:74,activity:100},
+ "D. Okafor":{...B0,hr:68,hrv:60,bp_sys:118,bp_dia:76,sleep:6.9,deep:17,stress:40,contact:140,reaction:318,need:2900,protein:92,mass:82,activity:95}};
+
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const sdv=a=>{if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1))};
+const msd=(vals,sig)=>Math.max(sdv(vals)||0,MINSD[sig]);
+const li=l=>LV.indexOf(l);
+const maxLevel=(...ls)=>ls.reduce((a,b)=>li(b)>li(a)?b:a);
+function fmt(sig,v){if(v===null||v===undefined||Number.isNaN(v))return"n/a";return sig==="intake_ratio"?(v*100).toFixed(0)+"%":v.toFixed(1)}
+const iso=t=>new Date(t).toISOString();
+const fmtDT=t=>iso(t).slice(0,16).replace("T"," ");
+
+class Sim{
+ constructor(seed=7){
+  const r=mulberry(seed);this.rnd=r;this.nrm=sd=>{const u=1-r(),v=r();return sd*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+  this.start=Date.UTC(2026,10,15,12,0);this.now=this.start;this.events=[];this.fast={};this.daily={};
+  this.emergency={};this.offline={};this.lastSeen={};
+  AST.forEach(a=>{this.emergency[a]=null;this.offline[a]=new Set();for(const g in SENSORS)this.lastSeen[a+"|"+g]=this.now});
+  this.seedEvents();AST.forEach(a=>this.history(a));
+ }
+ seedEvents(){
+  const d=Math.floor(this.now/DAY)*DAY;
+  AST.forEach(a=>{for(const k of[3,2,1,0]){const s=d-k*DAY+17*HOUR;this.events.push({a,kind:"exercise",start:s,end:s+HOUR})}});
+  const s=d-2*DAY+9*HOUR;this.events.push({a:"D. Okafor",kind:"EVA",start:s,end:s+4*HOUR});
+  this.events.push({a:"C. Tanaka",kind:"medication",start:this.now-20*HOUR,end:this.now-20*HOUR});
+ }
+ addEvent(a,kind){this.events.push({a,kind,start:this.now,end:this.now})}
+ boost(a,t){let hr=0,resp=0;for(const e of this.events)if(e.a===a&&(e.kind==="EVA"||e.kind==="exercise")&&e.start<=t&&t<=e.end){hr+=e.kind==="EVA"?25:35;resp+=4}return[hr,resp]}
+ fastValues(a,t,back,live){
+  const p=PROF[a],n=this.nrm;
+  const v={hr:p.hr+n(2.5),hrv:p.hrv+n(3),bp_sys:p.bp_sys+n(3),bp_dia:p.bp_dia+n(2.5),spo2:Math.min(100,p.spo2+n(.5)),resp:p.resp+n(.8),temp:p.temp+n(.12)};
+  if(a==="Cmdr A. Mokoena"&&back<24)v.hr=p.hr*1.12+n(2.5);
+  if(a==="Dr. B. Smith"){const f=Math.min(1,Math.max(0,1-back/36));v.resp=p.resp+4*f+n(.8);v.spo2=Math.min(100,p.spo2-.6*f+n(.5))}
+  const em=live?this.emergency[a]:null;
+  if(em!==null){const f=Math.min(1,(em+1)/4);v.spo2=p.spo2-9.6*f+n(.4);v.hr=p.hr+66*f+n(1.5);v.bp_sys=p.bp_sys-40*f+n(1.5);v.resp=p.resp+14*f+n(.8)}
+  const[hb,rb]=this.boost(a,t);v.hr+=hb;v.resp+=rb;return v;
+ }
+ dailyRow(a,k,date){
+  const p=PROF[a],n=this.nrm,kk=Math.max(k,0);
+  const row={date,sleep_hours:p.sleep+n(.35),deep_sleep_pct:p.deep+n(1.5),stress:p.stress+n(3),contact_min:p.contact+n(10),reaction_ms:p.reaction+n(5),need_kcal:p.need,protein_g:p.protein+n(5),hydration_pct:p.hydration+n(1.5),body_mass_kg:p.mass+n(.08),radiation_msv:Math.max(.1,p.rad+n(.05)),activity_min:p.activity+n(10)};
+  let frac=.97+n(.02);
+  if(a==="Cmdr A. Mokoena"){
+   if(kk<=6){const s=6-kk;row.sleep_hours=7.1-s*.38+n(.08);row.stress=38+s*26/6+n(1);row.contact_min=150-s*105/6+n(3);row.reaction_ms=312+s*39/6+n(2)}
+   if(kk<=11){frac=.88-(11-kk)*.0045+n(.01);row.protein_g=62+n(3)}
+   if(kk<=5)row.hydration_pct=85-(5-kk)*2.8+n(.5);
+   if(kk<14)row.body_mass_kg=79.5-(14-kk)*1.3/14+n(.05);
+  }
+  if(a==="C. Tanaka"&&k===9)row.radiation_msv=1.8;
+  row.intake_kcal=row.need_kcal*frac;row.intake_ratio=row.intake_kcal/row.need_kcal;return row;
+ }
+ history(a){
+  const n=14*288,rows=[];
+  for(let i=0;i<n;i++){const t=this.now-(n-1-i)*TICK*MIN;rows.push({t,...this.fastValues(a,t,n-1-i,false)})}
+  this.fast[a]=rows;const d0=Math.floor(this.now/DAY)*DAY,dr=[];
+  for(let k=27;k>=0;k--)dr.push(this.dailyRow(a,k,d0-k*DAY));
+  this.daily[a]=dr;
+ }
+ startEmergency(a="D. Okafor"){this.emergency[a]=0}
+ dropSensor(a,g){this.offline[a].add(g)}
+ restoreSensor(a,g){this.offline[a].delete(g)}
+ tick(){
+  this.now+=TICK*MIN;
+  for(const a of AST){
+   const v=this.fastValues(a,this.now,0,true);
+   if(this.emergency[a]!==null)this.emergency[a]+=1;
+   for(const g in SENSORS){if(this.offline[a].has(g))SENSORS[g].forEach(c=>v[c]=NaN);else this.lastSeen[a+"|"+g]=this.now}
+   const f=this.fast[a];f.push({t:this.now,...v});if(f.length>4200)f.shift();
+   const d=this.daily[a],nd=Math.floor(this.now/DAY)*DAY;
+   if(nd>d[d.length-1].date){d.push(this.dailyRow(a,-1,nd));if(d.length>45)d.shift()}
+  }
+ }
+}
+
+function fastStatus(df,events,a,now){
+ const wins=events.filter(e=>e.a===a&&(e.kind==="EVA"||e.kind==="exercise")).map(e=>[e.start-5*MIN,e.end+CTX_AFTER*MIN]);
+ const mask=df.map(r=>wins.some(w=>r.t>=w[0]&&r.t<=w[1]));
+ const base=df.filter((r,i)=>r.t<=now-3*HOUR&&r.t>now-14*DAY&&!mask[i]);
+ const inCtx=mask[mask.length-1],last=df[df.length-1],out={};
+ for(const sig of FAST){
+  const bv=base.map(r=>r[sig]).filter(v=>!Number.isNaN(v));
+  const mu=mean(bv),sd=msd(bv,sig),offline=Number.isNaN(last[sig]);
+  let lastSeen=null;for(let i=df.length-1;i>=0;i--)if(!Number.isNaN(df[i][sig])){lastSeen=df[i].t;break}
+  const info={sig,mu,sd,level:"GREEN",z:0,value:NaN,offline,lastSeen,inContext:inCtx};
+  if(offline){info.level="OFFLINE";out[sig]=info;continue}
+  const recent=[];for(let i=df.length-1;i>=0&&recent.length<PERSIST;i--)if(!Number.isNaN(df[i][sig]))recent.unshift(df[i][sig]);
+  const adj=recent.map(x=>{const z=(x-mu)/sd;return DIR[sig]?z*DIR[sig]:Math.abs(z)});
+  info.value=recent[recent.length-1];info.z=adj[adj.length-1];
+  let lvl="GREEN";
+  if(adj.length===PERSIST&&mean(adj)>=ZW&&Math.min(...adj)>=0&&!inCtx)lvl=mean(adj)>=ZS?"ORANGE":"YELLOW";
+  info.level=maxLevel(lvl,critical(sig,info.value));out[sig]=info;
+ }
+ return out;
+}
+function critical(sig,v){
+ const k=CRIT;
+ if(sig==="spo2")return v<k.spo2_red?"RED":v<k.spo2_orange?"ORANGE":"GREEN";
+ if(sig==="hr")return(v>k.hr_orange||v<k.hr_low)?"ORANGE":"GREEN";
+ if(sig==="temp")return(v>k.temp_high||v<k.temp_low)?"ORANGE":"GREEN";
+ if(sig==="bp_sys")return v<k.bp_sys_low?"ORANGE":"GREEN";
+ return"GREEN";
+}
+function redPattern(df,bpMu){
+ const d=df.filter(r=>!Number.isNaN(r.spo2)&&!Number.isNaN(r.hr)&&!Number.isNaN(r.bp_sys));
+ if(d.length<4||d[d.length-1].t!==df[df.length-1].t)return false;
+ const last=d[d.length-1],k=CRIT,mx=Math.max(...d.slice(-12).map(r=>r.bp_sys));
+ const falling=(mx-last.bp_sys)>=k.red_bp_drop||(bpMu-last.bp_sys)>=2*k.red_bp_drop;
+ return last.spo2<k.red_spo2&&last.hr>k.red_hr&&falling;
+}
+function slowStatus(daily){
+ const n=daily.length,base=daily.slice(Math.max(0,n-28),Math.max(1,n-14)),out={};
+ for(const sig of SLOW){
+  const bv=base.map(r=>r[sig]),mu=mean(bv),sd=msd(bv,sig),dr=DIR[sig];
+  const adj=x=>dr?((x-mu)/sd)*dr:Math.abs((x-mu)/sd);
+  const recent=adj(mean(daily.slice(-3).map(r=>r[sig])));
+  let run=0;for(let i=n-1;i>=0;i--){if(adj(daily[i][sig])>=1)run++;else break}
+  out[sig]={sig,mu,sd,value:daily[n-1][sig],z:recent,level:recent>=ZW?"YELLOW":"GREEN",days:run};
+ }
+ return out;
+}
+function slope(ys){const n=ys.length,mx=(n-1)/2,my=mean(ys);let sxy=0,sxx=0;ys.forEach((y,i)=>{sxy+=(i-mx)*(y-my);sxx+=(i-mx)*(i-mx)});return sxy/sxx}
+function nutritionStatus(daily){
+ let days=0;for(let i=daily.length-1;i>=0;i--){if(daily[i].intake_ratio<INTAKE_LOW)days++;else break}
+ const m=daily.slice(-14).map(r=>r.body_mass_kg),change=slope(m)*(m.length-1),pct=change/m[0]*100;
+ let level=days>=INTAKE_DAYS?"YELLOW":"GREEN";
+ if(level==="YELLOW"&&-pct>=MASS_ORANGE)level="ORANGE";
+ return{level,daysBelow:days,ratio:daily[daily.length-1].intake_ratio,massChange:change,massPct:pct};
+}
+function assess(sim,a){
+ const f=fastStatus(sim.fast[a],sim.events,a,sim.now),s=slowStatus(sim.daily[a]),nut=nutritionStatus(sim.daily[a]);
+ const red=redPattern(sim.fast[a],f.bp_sys.mu);
+ if(sim.events.some(e=>e.a===a&&e.kind==="dizzy"&&e.start>=sim.now-2*HOUR))f.dizzy={sig:"dizzy",level:"YELLOW",z:0,value:NaN,mu:NaN,sd:NaN,offline:false,lastSeen:null,inContext:false};
+ const fa=Object.values(f).filter(x=>["YELLOW","ORANGE","RED"].includes(x.level));
+ const sa=Object.values(s).filter(x=>x.level!=="GREEN");
+ let level="GREEN";
+ if(fa.length||sa.length||nut.level!=="GREEN")level="YELLOW";
+ if(fa.length>=2||fa.some(x=>x.level==="ORANGE"||x.level==="RED"))level="ORANGE";
+ if(red||fa.some(x=>x.level==="RED"))level="RED";
+ const ck=CHECKIN.filter(x=>s[x].level!=="GREEN");
+ const st={a,level,fast:f,slow:s,nutrition:nut,red,checkin:ck.length>=2,checkinSignals:ck,now:sim.now};
+ Object.assign(st,healthScore(st));st.alerts=buildAlerts(st);return st;
+}
+function healthScore(st){
+ const parts=[],excluded=[];let present=0,lost=0;
+ for(const sig in WEIGHTS){const w=WEIGHTS[sig],info=st.fast[sig]||st.slow[sig];if(!info)continue;
+  if(info.offline){excluded.push(sig);continue}
+  const pen=Math.min(1,Math.max(0,(info.z-1)/3));present+=w;lost+=w*pen;parts.push([sig,w,Math.round(w*pen*10)/10])}
+ let score=present?Math.round(100*(1-lost/present)):0;
+ if(st.level==="RED")score=Math.min(score,RED_CAP);
+ return{score:Math.max(0,Math.min(100,score)),parts,excluded};
+}
+function buildAlerts(st){
+ const al=[],F=st.fast,S=st.slow;
+ if(st.red)al.push({key:"RED",level:"RED",kind:"red",title:"Life-threatening pattern",what:`SpO2 fell to ${F.spo2.value.toFixed(0)}% AND heart rate rose to ${F.hr.value.toFixed(0)} bpm AND blood pressure is dropping (${F.bp_sys.value.toFixed(0)} mmHg).`,why:"This combination needs immediate human attention. (Placeholder thresholds.)",todo:"Open the emergency checklist. Mission Control notified (simulated). Confirm the astronaut is conscious."});
+ const fa=Object.values(F).filter(x=>["YELLOW","ORANGE","RED"].includes(x.level));
+ if(fa.length>=2&&!st.red)al.push({key:"COMBINED",level:"ORANGE",kind:"combined",title:"Several signals abnormal together",what:"Abnormal at the same time: "+fa.map(x=>x.sig==="dizzy"?"Reported dizziness":INFO[x.sig][0]).join(", ")+".",why:"Combined shifts are more reliable than any single reading.",todo:"Alert the crew medical officer and follow the protocol."});
+ for(const x of fa){
+  if(x.sig==="dizzy"){al.push({key:"dizzy",level:"YELLOW",kind:"signal",title:"Dizziness reported",what:"The astronaut pressed ‘I feel dizzy’.",why:"Dizziness can go with low blood pressure, low oxygen or dehydration.",todo:"Sit down, drink fluids and tell the crew medical officer."});continue}
+  const[label,unit,why,todo]=INFO[x.sig],pct=(x.value-x.mu)/x.mu*100;
+  al.push({key:x.sig,level:x.level,kind:"signal",title:label+" off baseline",what:`${label} is ${x.value.toFixed(1)} ${unit}, ${Math.abs(pct).toFixed(0)}% ${pct>0?"above":"below"} this astronaut’s baseline (${x.mu.toFixed(1)}) for at least ${PERSIST*TICK} minutes.`,why,todo});
+ }
+ const sa=Object.values(S).filter(x=>x.level!=="GREEN"&&x.sig!=="intake_ratio");
+ if(sa.length)al.push({key:"SLOW",level:"YELLOW",kind:"slow",title:"Slow changes building over days",what:sa.map(x=>`${INFO[x.sig][0]} ${fmt(x.sig,x.value)} (baseline ${fmt(x.sig,x.mu)})`).join("; ")+".",why:"Slow drifts can come days or weeks before acute vital signs change.",todo:"Review sleep, workload and contact time. See the Mind and Sleep tab."});
+ const n=st.nutrition;
+ if(n.level!=="GREEN")al.push({key:"NUTRITION",level:n.level,kind:"nutrition",title:"Eating less than the body needs",what:`Intake has been more than ${Math.round((1-INTAKE_LOW)*100)}% below estimated need for ${n.daysBelow} days; body mass changed ${n.massChange>=0?"+":""}${n.massChange.toFixed(1)} kg over 14 days.`,why:INFO.intake_ratio[2],todo:"Suggested: an extra calorie-dense meal and a note to the crew medical officer. Protocol to be confirmed by a flight surgeon."});
+ if(st.checkin){const days=Math.max(...st.checkinSignals.map(x=>S[x].days));
+  al.push({key:"CHECKIN",level:"ORANGE",kind:"checkin",title:"Check-in needed",what:`${st.checkinSignals.length} slow signals are worse than personal normal together: ${st.checkinSignals.map(x=>INFO[x][0]).join(", ")} (up to ${days} days).`,why:"Several slow signals moving together is the kind of quiet shift we want to catch early. This is not a diagnosis.",todo:"Suggest a private check-in with the crew medical officer or a counsellor."})}
+ return al.sort((a,b)=>li(b.level)-li(a.level));
+}
+function route(al,a,consent){
+ const buddy=BUDDY[a],note=`Please check in on ${a} today. No medical details are shared.`;
+ if(al.kind==="checkin"){const o=[["Crew medical officer",`Check-in suggested for ${a}: ${al.what}`]];if(consent)o.push([buddy,note]);return o}
+ if(al.level==="RED")return[["Whole crew",`EMERGENCY: ${a} needs immediate help. Follow the emergency checklist.`],["Mission Control (simulated)",`${a}: ${al.what}`],["Nearest crewmate",`Go to ${a} now and follow the checklist.`]];
+ if(al.level==="ORANGE")return[[a,`${al.title}. ${al.todo}`],["Crew medical officer",`${a}: ${al.what}`],[buddy,note]];
+ if(al.level==="YELLOW")return[[a,`Private nudge: ${al.todo}`]];
+ return[];
+}
+const sigInfo=(st,sig)=>st.fast[sig]||st.slow[sig];
+function organLevels(st){
+ const out={};
+ for(const o in ORGANS){const ls=ORGANS[o].map(s=>sigInfo(st,s).level),real=ls.filter(l=>LV.includes(l));out[o]=real.length?maxLevel(...real):(ls.every(l=>l==="OFFLINE")?"OFFLINE":"GREEN")}
+ if(st.red)["heart","lungs","blood"].forEach(o=>out[o]="RED");return out;
+}
+function organDetail(st,organ){
+ return ORGANS[organ].map(sig=>{const info=sigInfo(st,sig),[label,unit,why,todo]=INFO[sig],bad=["YELLOW","ORANGE","RED"].includes(info.level);
+  const val=info.level==="OFFLINE"?`Sensor Offline - last seen ${info.lastSeen?Math.round((st.now-info.lastSeen)/MIN):0} min ago`:`${fmt(sig,info.value)} ${unit}`.trim();
+  return{sig,label,value:val,normal:`${fmt(sig,info.mu-info.sd)} to ${fmt(sig,info.mu+info.sd)} ${unit}`.trim(),level:info.level,why:bad?why:"Within this astronaut’s personal range.",todo:bad?todo:"Nothing needed."}});
+}
+function riskOutlook(st){
+ const S=st.slow,F=st.fast,n=st.nutrition,out=[];
+ if(n.daysBelow>=INTAKE_DAYS&&S.hydration_pct.level!=="GREEN")out.push(["Possible dehydration and energy-deficit risk","YELLOW",`Intake below need for ${n.daysBelow} days; hydration ${S.hydration_pct.value.toFixed(0)}%.`]);
+ if(S.sleep_hours.level!=="GREEN"&&S.stress.level!=="GREEN")out.push(["Possible fatigue and overload risk","YELLOW",`Sleep ${S.sleep_hours.value.toFixed(1)} h and stress ${S.stress.value.toFixed(0)}/100 both off baseline.`]);
+ if(["YELLOW","ORANGE"].includes(F.resp.level)&&F.resp.z>0)out.push(["Possible respiratory trend","YELLOW",`Breathing rate ${F.resp.value.toFixed(1)}/min above baseline ${F.resp.mu.toFixed(1)}.`]);
+ if(["YELLOW","ORANGE"].includes(F.hr.level)&&["YELLOW","ORANGE"].includes(F.hrv.level))out.push(["Possible cardiovascular strain","YELLOW","Heart rate high and HRV low together."]);
+ return out;
+}
+
+</script>
+<script>
+/* AstroHealth interface. ALL DATA IS SIMULATED (MOCK DATA). */
+const $=id=>document.getElementById(id);
+const S={sim:null,st:{},tracker:{},notes:[],alertsLog:[],live:true,speed:5,conn:"LIVE",consent:{},mood:{},breath:false,who:AST[0],organ:"heart",sub:"body",trendSig:"hr",rad:false,tEmerg:null,emergWho:null,responded:false,escalated:false,lastTick:0,lastUpdate:Date.now(),sound:false,sec:"demo",audio:null};
+const SUBS=[["body","Body"],["risk","Early detection"],["mind","Mind & Sleep"],["support","Mental health help"],["nutrition","Nutrition"],["alerts","Crew alerts"],["emergency","Emergency"],["data","Data"]];
+const dot=l=>`<i class="dot" style="background:${COLOR[l]}"></i>`;
+const badge=l=>`<span class="bd" style="color:${COLOR[l]}">${dot(l)}${l==="OFFLINE"?"SENSOR OFFLINE":l+" - "+WORD[l]}</span>`;
+const online=()=>S.conn==="LIVE";
+const pending=()=>S.notes.filter(n=>n.pending).length+S.alertsLog.filter(n=>n.pending).length;
+const hhmm=t=>iso(t).slice(11,16),mmdd=t=>iso(t).slice(5,10);
+
+function init(){
+ S.sim=new Sim(7);S.st={};S.tracker={};S.notes=[];S.alertsLog=[];S.conn="LIVE";S.tEmerg=null;S.emergWho=null;S.responded=false;S.escalated=false;
+ AST.forEach(a=>S.consent[a]=false);runEngine();
+}
+function logAlert(a,al){S.alertsLog.unshift({ts:S.sim.now,a,level:al.level,title:al.title,what:al.what,todo:al.todo,pending:!online()})}
+function logNote(rec,a,msg){S.notes.unshift({ts:S.sim.now,rec,a,msg,pending:!online()})}
+function runEngine(){
+ for(const a of AST){
+  const st=assess(S.sim,a);S.st[a]=st;const seen=new Set();
+  for(const al of st.alerts){
+   const key=a+"|"+al.key;seen.add(key);const prev=S.tracker[key];
+   if(prev===undefined||li(al.level)>li(prev)){logAlert(a,al);route(al,a,S.consent[a]).forEach(([r,m])=>logNote(r,a,m));if(al.level==="RED")onRed(a)}
+   S.tracker[key]=al.level;
+  }
+  Object.keys(S.tracker).forEach(k=>{if(k.startsWith(a+"|")&&!seen.has(k))delete S.tracker[k]});
+  if(st.level==="RED"&&S.tEmerg===null){S.tEmerg=Date.now();S.emergWho=a;S.responded=false;S.escalated=false}
+ }
+ if(!AST.some(a=>S.st[a].level==="RED"))S.tEmerg=null;
+ S.lastUpdate=Date.now();
+}
+function onRed(a){toast(`RED - CRITICAL: ${a}. Open the Emergency tab.`);if(S.sound)beep()}
+function beep(){try{S.audio=S.audio||new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<3;i++){const o=S.audio.createOscillator(),g=S.audio.createGain();o.frequency.value=880;g.gain.value=.08;o.connect(g);g.connect(S.audio.destination);o.start(S.audio.currentTime+i*.35);o.stop(S.audio.currentTime+i*.35+.2)}}catch(e){}}
+let toastT=null;
+function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toastT);toastT=setTimeout(()=>t.style.display="none",4500)}
+
+/* ---------- charts (inline SVG) ---------- */
+function lineSvg(xs,ys,o={}){
+ const w=o.w||560,h=o.h||170,L=46,R=w-10,T=12,B=h-24,vals=ys.filter(v=>!Number.isNaN(v));
+ if(!vals.length)return"";
+ let lo=Math.min(...vals),hi=Math.max(...vals);
+ if(o.mu!==undefined){lo=Math.min(lo,o.mu-o.sd);hi=Math.max(hi,o.mu+o.sd)}
+ const pad=(hi-lo)*.1||1;lo-=pad;hi+=pad;
+ const X=i=>L+i/(ys.length-1)*(R-L),Y=v=>B-(v-lo)/(hi-lo)*(B-T);
+ let d="",pen=false;ys.forEach((v,i)=>{if(Number.isNaN(v)){pen=false;return}d+=(pen?"L":"M")+X(i).toFixed(1)+","+Y(v).toFixed(1);pen=true});
+ const lastI=ys.length-1-[...ys].reverse().findIndex(v=>!Number.isNaN(v));
+ let s=`<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${o.title||"trend"}">`;
+ if(o.mu!==undefined)s+=`<rect x="${L}" y="${Y(o.mu+o.sd)}" width="${R-L}" height="${Y(o.mu-o.sd)-Y(o.mu+o.sd)}" fill="#243350" opacity=".9"/>`;
+ s+=`<line x1="${L}" y1="${B}" x2="${R}" y2="${B}" stroke="#243350"/><line x1="${L}" y1="${T}" x2="${L}" y2="${B}" stroke="#243350"/>`;
+ s+=`<path d="${d}" fill="none" stroke="${o.color||"#4DA3FF"}" stroke-width="2.2"/>`;
+ s+=`<circle cx="${X(lastI)}" cy="${Y(ys[lastI])}" r="4" fill="${o.color||"#4DA3FF"}"><title>${o.fy?o.fy(ys[lastI]):ys[lastI].toFixed(1)}</title></circle>`;
+ const fx=o.fx||(x=>x);
+ s+=`<text x="${L-4}" y="${T+8}" text-anchor="end" font-size="10" fill="#93A4BF">${hi.toFixed(o.dec??1)}</text><text x="${L-4}" y="${B}" text-anchor="end" font-size="10" fill="#93A4BF">${lo.toFixed(o.dec??1)}</text>`;
+ s+=`<text x="${L}" y="${h-8}" font-size="10" fill="#93A4BF">${fx(xs[0])}</text><text x="${R}" y="${h-8}" text-anchor="end" font-size="10" fill="#93A4BF">${fx(xs[xs.length-1])}</text></svg>`;
+ return s;
+}
+function barSvg(rows){
+ const w=560,h=190,L=10,R=w-10,T=14,B=h-24,max=Math.max(...rows.map(r=>r.need))*1.1,bw=(R-L)/rows.length;
+ let s=`<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Food intake against estimated need, last 14 days">`;
+ rows.forEach((r,i)=>{const y=B-r.intake/max*(B-T),ok=r.ratio>=INTAKE_LOW;s+=`<rect x="${L+i*bw+4}" y="${y}" width="${bw-8}" height="${B-y}" rx="3" fill="${ok?COLOR.GREEN:COLOR.YELLOW}"><title>${mmdd(r.date)}: ${r.intake.toFixed(0)} kcal (${(r.ratio*100).toFixed(0)}% of need)</title></rect>`});
+ const yn=B-rows[rows.length-1].need/max*(B-T);
+ s+=`<line x1="${L}" y1="${yn}" x2="${R}" y2="${yn}" stroke="#E6EDF7" stroke-dasharray="6 4"/><text x="${R}" y="${yn-4}" text-anchor="end" font-size="10" fill="#E6EDF7">Estimated need</text>`;
+ s+=`<text x="${L}" y="${h-8}" font-size="10" fill="#93A4BF">Day 1 (${mmdd(rows[0].date)})</text><text x="${R}" y="${h-8}" text-anchor="end" font-size="10" fill="#93A4BF">Day 14</text></svg>`;
+ return s;
+}
+function bodySvg(lv,overall,sel,rad){
+ const c=l=>COLOR[l]||COLOR.GREEN,out=c(overall),f="#1B2A44";
+ let g=`<circle cx="0" cy="150" r="20" fill="${f}" stroke="${out}" stroke-width="2.5"/>`;
+ [[-40,20,80,110,18],[-70,40,22,85,10],[48,40,22,85,10],[-36,-95,30,115,12],[6,-95,30,115,12]].forEach(([x,y,w,h,r])=>g+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${f}" stroke="${out}" stroke-width="2.5"/>`);
+ g+=`<line x1="0" y1="28" x2="0" y2="128" stroke="${c(lv.blood)}" stroke-width="4" stroke-linecap="round"/>`;
+ [-64,54].forEach(x=>g+=`<rect x="${x}" y="46" width="10" height="70" rx="5" fill="${c(lv.muscles)}" opacity=".85"/>`);
+ [-24,18].forEach(x=>g+=`<rect x="${x}" y="-85" width="6" height="95" rx="3" fill="${c(lv.bones)}" opacity=".85"/>`);
+ g+=`<ellipse cx="0" cy="150" rx="11" ry="9" fill="${c(lv.brain)}"/><ellipse cx="-17.5" cy="99" rx="13.5" ry="19" fill="${c(lv.lungs)}"/><ellipse cx="17.5" cy="99" rx="13.5" ry="19" fill="${c(lv.lungs)}"/><circle cx="-6" cy="72" r="11" fill="${c(lv.heart)}"/><ellipse cx="14" cy="53" rx="12" ry="13" fill="${c(lv.stomach)}"/>`;
+ const rings={brain:[0,150,17],lungs:[0,99,40],heart:[-6,72,16],stomach:[14,53,17],blood:[0,78,52],muscles:[-59,80,36],bones:[-21,-38,52],skin:[0,20,70]};
+ for(const o in rings){const[x,y,r]=rings[o];if(lv[o]==="RED")g+=`<circle class="pulse" cx="${x}" cy="${y}" r="${r+4}"/>`;if(o===sel)g+=`<circle cx="${x}" cy="${y}" r="${r+1}" fill="none" stroke="#fff" stroke-width="1.8" stroke-dasharray="5 4"/>`}
+ if(rad)g+=`<rect x="-78" y="-102" width="156" height="285" rx="30" fill="none" stroke="${c(lv.bones)}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+ const h=(o,inner)=>inner.replace("/>",` class="hit" data-act="organ" data-v="${o}" tabindex="0" role="button" aria-label="${o}"/>`);
+ g+=h("blood",'<line x1="0" y1="28" x2="0" y2="128" stroke="transparent" stroke-width="12"/>')+h("lungs",'<circle cx="0" cy="99" r="32"/>')+h("heart",'<circle cx="-6" cy="72" r="13"/>')+h("stomach",'<circle cx="14" cy="53" r="14"/>')+h("brain",'<circle cx="0" cy="150" r="14"/>')+h("muscles",'<rect x="-66" y="44" width="14" height="74"/>')+h("muscles",'<rect x="52" y="44" width="14" height="74"/>')+h("bones",'<rect x="-27" y="-87" width="12" height="99"/>')+h("bones",'<rect x="15" y="-87" width="12" height="99"/>');
+ return`<svg viewBox="-85 0 170 300" style="max-width:250px;width:100%" role="group" aria-label="Interactive body diagram"><g transform="translate(0,190) scale(1,-1)">${g}</g></svg>`;
+}
+
+/* ---------- panels ---------- */
+const alertCard=al=>`<div class="card al" style="--c:${COLOR[al.level]};margin-bottom:8px"><b>${dot(al.level)}${al.level} - ${al.title}</b><p><b>What happened:</b> ${al.what}</p><p><b>Why it matters:</b> ${al.why}</p><p><b>What to do next:</b> ${al.todo}</p></div>`;
+const tile=(l,v,d,lvl)=>`<div class="m"><span>${dot(lvl)}${l}</span><b>${v}</b><span>${d}</span></div>`;
+function dailyRows(a){return S.sim.daily[a].slice(-14)}
+function sigSeries(a,st,sig){
+ const info=sigInfo(st,sig);
+ if(FAST.includes(sig)){const d=S.sim.fast[a].slice(-288);return{xs:d.map(r=>r.t),ys:d.map(r=>r[sig]),mu:info.mu,sd:info.sd,fx:hhmm,lab:"last 24 h"}}
+ const d=dailyRows(a);return{xs:d.map(r=>r.date),ys:d.map(r=>r[sig]),mu:info.mu,sd:info.sd,fx:mmdd,lab:"last 14 days"};
+}
+function pBody(a,st){
+ const lv=organLevels(st),rows=organDetail(st,S.organ),f=S.sim.fast[a][S.sim.fast[a].length-1];
+ const list=Object.keys(ORGANS).map(o=>`<button class="org" data-act="organ" data-v="${o}" aria-pressed="${o===S.organ}">${dot(lv[o])}<b>${o[0].toUpperCase()+o.slice(1)}</b><span class="mut small">${lv[o]==="OFFLINE"?"SENSOR OFFLINE":WORD[lv[o]]}</span></button>`).join("");
+ const main=rows[0].sig,mi=sigInfo(st,main);let chart="";
+ if(mi.level!=="OFFLINE"){const s=sigSeries(a,st,main);chart=`<h4>${INFO[main][0]}, ${s.lab} (band = personal normal)</h4>`+lineSvg(s.xs,s.ys,{mu:s.mu,sd:s.sd,fx:s.fx,title:INFO[main][0]})}
+ const vit=[["hr","Heart rate"],["bp_sys","Blood pressure"],["spo2","SpO2"],["resp","Breathing"],["temp","Temperature"],["sleep_hours","Sleep"],["stress","Stress"],["hydration_pct","Hydration"],["body_mass_kg","Body mass"],["radiation_msv","Radiation"]].map(([sig,lab])=>{
+  const i=sigInfo(st,sig),u=INFO[sig][1];
+  if(i.level==="OFFLINE")return tile(lab,"Offline","sensor offline","OFFLINE");
+  const val=sig==="bp_sys"?`${f.bp_sys.toFixed(0)}/${f.bp_dia.toFixed(0)}`:`${fmt(sig,i.value)} ${u}`;
+  return tile(lab,val,"baseline "+fmt(sig,i.mu),i.level)}).join("");
+ const ev=S.sim.events.filter(e=>e.a===a&&e.start<=S.sim.now).sort((x,y)=>y.start-x.start).slice(0,8).map(e=>`<tr><td>${e.kind}</td><td>${fmtDT(e.start)}</td><td>${fmtDT(e.end)}</td></tr>`).join("");
+ return`<div class="grid g2"><div class="card"><h4>Interactive body diagram: click an organ</h4><div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start"><div style="flex:1 1 220px;text-align:center">${bodySvg(lv,st.level,S.organ,S.rad)}<label class="small" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" data-chg="rad" ${S.rad?"checked":""}> Radiation overlay</label></div><div style="flex:1 1 170px">${list}</div></div></div>
+ <div class="card"><div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap"><div><span class="mut small">HEALTH SCORE</span><div class="big">${st.score}<span class="mut small"> / 100</span></div></div><h3>${badge(st.level)}</h3></div>
+ ${st.excluded.length?`<p style="color:var(--o)">Sensor Offline, excluded from the score: ${st.excluded.map(s=>INFO[s][0]).join(", ")}</p>`:""}
+ <h3 style="margin-top:10px">${S.organ[0].toUpperCase()+S.organ.slice(1)}</h3>
+ ${rows.map(r=>`<div class="card" style="margin:6px 0;background:var(--pan2)"><b>${r.label}:</b> ${r.value}<br><span class="mut">Personal normal: ${r.normal}</span><br>Status: ${badge(r.level)}<br><b>Why:</b> ${r.why}<br><b>What to do:</b> ${r.todo}</div>`).join("")}${chart}</div></div>
+ <h3 style="margin-top:14px">Active alerts</h3>${st.alerts.length?st.alerts.map(alertCard).join(""):`<div class="card" style="border-color:var(--g)">All systems nominal.</div>`}
+ <h3>Vitals</h3><div class="grid g5">${vit}</div>
+ <h3 style="margin-top:14px">24-hour trend and events</h3><label>Signal <select data-chg="trend">${FAST.map(s=>`<option value="${s}" ${s===S.trendSig?"selected":""}>${INFO[s][0]}</option>`).join("")}</select></label>
+ <div class="card" style="margin-top:8px">${sigInfo(st,S.trendSig).level==="OFFLINE"?"Sensor Offline for this signal.":(()=>{const s=sigSeries(a,st,S.trendSig);return lineSvg(s.xs,s.ys,{mu:s.mu,sd:s.sd,fx:s.fx,title:INFO[S.trendSig][0]})})()}</div>
+ <div class="card" style="margin-top:8px"><table><tr><th>Event</th><th>Start</th><th>End</th></tr>${ev}</table>
+ <p style="margin-top:8px"><button class="btn" data-act="dizzy">I feel dizzy</button> <button class="btn" data-act="med">I took medication</button> <button class="btn" data-act="skip">Skipped a meal</button></p></div>`;
+}
+function pRisk(st){
+ const r=riskOutlook(st);
+ return`<p class="mut">Risk outlook shown as HYPOTHESES with the evidence used. Not predictions.</p>`+(r.length?r.map(([t,l,e])=>`<div class="card al" style="--c:${COLOR[l]};margin-bottom:8px"><b>${dot(l)}${t}</b><p>Evidence: ${e}</p></div>`).join(""):`<div class="card" style="border-color:var(--g)">No elevated risk hypotheses right now.</div>`);
+}
+function pMind(a,st){
+ const d=dailyRows(a),charts=CHECKIN.map(sig=>{const i=st.slow[sig];return`<div class="card">${tile(INFO[sig][0],`${fmt(sig,i.value)} ${INFO[sig][1]}`,"baseline "+fmt(sig,i.mu),i.level)}${lineSvg(d.map(r=>r.date),d.map(r=>r[sig]),{mu:i.mu,sd:i.sd,fx:mmdd,h:130,title:INFO[sig][0]})}<p class="mut small">Last 14 days (band = personal normal)</p></div>`}).join("");
+ const ck=st.alerts.find(x=>x.kind==="checkin");
+ return`<p class="mut">Stress, isolation and mood are estimated from proxies (HRV, sleep, activity, contact time). Simulated here.</p><div class="grid g2">${charts}</div>`+(ck?alertCard(ck):`<div class="card" style="border-color:var(--g)">No check-in flag.</div>`);
+}
+function pNutrition(a,st){
+ const d=dailyRows(a),n=st.nutrition,rows=d.map(r=>({date:r.date,intake:r.intake_kcal,need:r.need_kcal,ratio:r.intake_ratio}));
+ const skipped=S.sim.events.filter(e=>e.a===a&&e.kind==="skipped_meal"&&e.start>=S.sim.now-7*DAY).length,al=st.alerts.find(x=>x.kind==="nutrition"),last=d[d.length-1];
+ return`<p class="mut">Intake is estimated from simulated galley and package scans, not typed in.</p><div class="card"><h4>Energy balance, last 14 days (yellow = more than 10% below need)</h4>${barSvg(rows)}</div>
+ <div class="grid g4" style="margin:10px 0">${tile("Body mass change (14 d)",(n.massChange>=0?"+":"")+n.massChange.toFixed(1)+" kg","",n.level)}${tile("Protein",last.protein_g.toFixed(0)+" g/day","","GREEN")}${tile("Hydration",last.hydration_pct.toFixed(0)+"%","",st.slow.hydration_pct.level)}${tile("Meals skipped (7 d)",skipped,"","GREEN")}</div>
+ <div class="card"><h4>Body mass (kg)</h4>${lineSvg(d.map(r=>r.date),d.map(r=>r.body_mass_kg),{fx:mmdd,h:150,color:COLOR.YELLOW,title:"Body mass"})}</div><div style="margin-top:10px">${al?alertCard(al):`<div class="card" style="border-color:var(--g)">Intake is close to estimated need.</div>`}</div>`;
+}
+function pAlerts(a){
+ const log=S.notes.slice(0,25).map(n=>`<tr><td>${fmtDT(n.ts)}</td><td>${n.rec}</td><td>${n.a}</td><td>${n.msg}</td><td>${n.pending?"pending":"synced"}</td></tr>`).join("");
+ return`<h4>Who is told what (design proposal to agree with flight surgeons and NASA medical-privacy rules)</h4><div class="card"><table><tr><td><b>GREEN</b></td><td>Nobody</td></tr><tr><td><b>YELLOW</b></td><td>The astronaut only (private nudge)</td></tr><tr><td><b>ORANGE</b></td><td>Astronaut + crew medical officer; the buddy gets a “check in today” note with no medical details</td></tr><tr><td><b>RED</b></td><td>Whole crew alarm + Mission Control (simulated); nearest crewmate responds</td></tr><tr><td><b>CHECK-IN FLAG</b></td><td>Crew medical officer only, unless the astronaut chooses to share</td></tr></table></div>
+ <p><label><input type="checkbox" data-chg="consent" ${S.consent[a]?"checked":""}> ${a} agrees to share check-in notes with buddy ${BUDDY[a]}</label></p>
+ <p><button class="btn" data-act="checkin">${BUDDY[a]}: I checked in on ${a}</button></p>
+ <h4>Notification log</h4><div class="card scroll" style="overflow-x:auto"><table><tr><th>Time</th><th>To</th><th>About</th><th>Message</th><th>Sync</th></tr>${log||`<tr><td colspan="5" class="mut">No notifications yet.</td></tr>`}</table></div>`;
+}
+function pEmergency(){
+ const a=AST.find(x=>S.st[x].level==="RED");
+ if(!a)return`<div class="card">No emergency active. Press <b>Simulate Emergency</b> above to start the simulated pattern for D. Okafor.</div>`;
+ const al=S.st[a].alerts.find(x=>x.kind==="red"),left=Math.max(0,60-Math.floor((Date.now()-S.tEmerg)/1000));
+ if(left===0&&!S.responded&&!S.escalated){S.escalated=true;logNote("Mission Control (simulated)",a,`No response from ${a}: escalated.`);toast("No response: escalated (simulated).")}
+ const mc=S.notes.filter(n=>n.a===a&&/Mission Control|Whole crew|Nearest/.test(n.rec)).slice(0,5).map(n=>`<tr><td>${fmtDT(n.ts)}</td><td>${n.rec}</td><td>${n.msg}</td></tr>`).join("");
+ return`<p class="mut">SIMULATED emergency.</p><div class="card al" style="--c:${COLOR.RED};background:#2A1313"><h3 style="color:var(--r)">RED - CRITICAL: ${a}</h3><p><b>What happened:</b> ${al.what}</p><p><b>Why it matters:</b> ${al.why}</p><p><b>What to do next:</b> ${al.todo}</p></div>
+ <div class="card" style="margin-top:8px"><b>Emergency checklist (placeholder, to be confirmed by a flight surgeon)</b><ol><li>Go to the astronaut and check responsiveness and breathing.</li><li>Check cabin CO2 and air supply.</li><li>Give oxygen if available and follow the medical protocol.</li><li>Report status to Mission Control (simulated).</li></ol></div>
+ <div class="card" style="margin-top:8px"><b>Mission Control notice (simulated)</b><table>${mc}</table></div>
+ <div class="card" style="margin-top:8px"><b>Confirm the astronaut is conscious: ${left} s left</b><div class="countbar" style="margin:8px 0"><i style="width:${left/60*100}%"></i></div>
+ ${S.responded?`<p style="color:var(--g)">Response confirmed. Keep monitoring.</p>`:left===0?`<p style="color:var(--r)"><b>No response: ESCALATED to Mission Control and all crew (simulated).</b></p>`:`<button class="btn" data-act="conscious">Astronaut is conscious</button>`}</div>`;
+}
+function pData(a,st){
+ const f=S.sim.fast[a].slice(-12).reverse(),al=S.alertsLog.slice(0,20).map(x=>`<tr><td>${fmtDT(x.ts)}</td><td>${x.a}</td><td>${x.level}</td><td>${x.title}</td><td>${x.pending?"pending":"synced"}</td></tr>`).join("");
+ const parts=st.parts.map(([s,w,p])=>`<tr><td>${INFO[s][0]}</td><td>${w}</td><td>${p}</td></tr>`).join("");
+ return`<div class="grid g4">${tile("Items waiting to sync",pending(),"","GREEN")}</div>
+ <h4 style="margin-top:12px">Assumptions behind the simulation</h4><div class="card"><table><tr><th>Assumption</th><th>Source</th></tr>${ASSUMPTIONS.map(r=>`<tr><td>${r[0]}</td><td class="mut">${r[1]}</td></tr>`).join("")}</table></div>
+ <h4 style="margin-top:12px">Health score formula</h4><div class="card"><p>Score = 100 x (1 - weighted penalty / weights of working sensors). Each signal’s penalty grows from 0 at 1 standard deviation to full at 4 standard deviations from the astronaut’s own baseline. RED caps the score at 30. Offline sensors are excluded, never assumed normal.</p><table><tr><th>Signal</th><th>Weight</th><th>Penalty now</th></tr>${parts}</table></div>
+ <h4 style="margin-top:12px">Latest readings (simulated)</h4><div class="card" style="overflow-x:auto"><table><tr><th>Time</th>${FAST.map(s=>`<th>${s}</th>`).join("")}</tr>${f.map(r=>`<tr><td>${hhmm(r.t)}</td>${FAST.map(s=>`<td>${Number.isNaN(r[s])?"offline":r[s].toFixed(1)}</td>`).join("")}</tr>`).join("")}</table><p><button class="btn" data-act="download">Download readings (CSV, simulated)</button></p></div>
+ <h4 style="margin-top:12px">Alert log</h4><div class="card" style="overflow-x:auto"><table><tr><th>Time</th><th>Astronaut</th><th>Level</th><th>Alert</th><th>Sync</th></tr>${al||`<tr><td colspan="5" class="mut">No alerts logged yet.</td></tr>`}</table></div>`;
+}
+function renderStatus(){
+ const s=S.sim,day=MISSION_DAY+Math.floor((s.now-s.start)/DAY);
+ $("statusline").textContent=`ASTROHEALTH | ${online()?"LIVE":"OFFLINE"} | Crew: ${AST.length} | ISS | Mission Day ${day} | Connection: ${S.conn} | Sim time ${fmtDT(s.now)} UTC | Last update: ${Math.floor((Date.now()-S.lastUpdate)/1000)} s ago | Pending sync: ${pending()}`;
+ $("connbtn").textContent="Connection: "+S.conn;
+ const red=AST.find(a=>S.st[a].level==="RED"),bar=$("redbar");
+ if(red&&!S.responded){bar.style.display="block";bar.innerHTML=`RED - CRITICAL: ${red} (simulated). <button class="btn" data-act="goemerg">Open Emergency tab</button>`}else bar.style.display="none";
+}
+
+const MOODS=[["Very low",1,"#EB5757"],["Low",2,"#F2994A"],["Okay",3,"#F2C94C"],["Good",4,"#34C77B"],["Great",5,"#4DA3FF"]];
+function pSupport(a,st){
+ const log=(S.mood[a]||[]),last=log[0],ck=st.alerts.find(x=>x.kind==="checkin"),sl=st.slow;
+ const lowStreak=log.length>=2&&log[0].v<=2&&log[1].v<=2;
+ const mb=MOODS.map(([l,v,c])=>`<button class="mood" data-act="mood" data-v="${v}" aria-pressed="${last&&last.v===v&&last.fresh}" style="border-left:5px solid ${c}">${l}</button>`).join("");
+ const reply=!last?"":last.v<=2?`<div class="card al" style="--c:var(--o);margin-top:10px"><b>Thank you for telling us. Hard days happen on long missions.</b><p>You do not have to handle this alone. Pick what feels right:</p><button class="btn" data-act="reqcheck">Ask for a private check-in</button> <button class="btn" data-act="breath">Try a 1-minute breathing exercise</button></div>${lowStreak?`<p class="small" style="color:var(--o)">Low mood twice in a row. A private check-in is suggested. It is never a diagnosis.</p>`:""}`:`<p class="mut">Logged. Keep it up: small routines protect mood.</p>`;
+ const hist=log.slice(0,7).map(x=>`<span class="chip" style="border-left:4px solid ${MOODS[x.v-1][2]}">${MOODS[x.v-1][0]} ${hhmm(x.ts)}</span>`).join("")||`<span class="mut small">No check-ins yet today.</span>`;
+ const contact=sl.contact_min?fmt("contact_min",sl.contact_min.value):"n/a";
+ const sig=ck?`<div class="card al" style="--c:var(--o)"><h3>Your signals suggest a rough patch</h3><p>Sleep, stress and contact time have been drifting together. This is a good time to reach out.</p><button class="btn" data-act="reqcheck">Ask for a private check-in</button></div>`:`<div class="card" style="border-color:var(--g)"><h3>Your signals look steady</h3><p class="mut">No isolation or stress pattern flagged for ${a}. Contact time: ${contact} min/day.</p></div>`;
+ const bt=S.breath?`<div class="breath in" id="bcircle"><span id="btext">Breathe in</span></div><button class="btn" data-act="breath">Stop</button>`:`<p class="mut">Slow breathing can calm stress in about a minute: in 4 s, hold 4 s, out 6 s.</p><button class="btn" data-act="breath">Start breathing guide</button>`;
+ return`<div class="card sos"><h3>You are not alone up here</h3><p>Isolation, low mood and anxiety are common on long missions. Asking for help is part of the job. All of this is <b>private</b>: only you and the crew medical officer can see it, and nothing is shared with the crew unless you choose.</p><button class="btn red" data-act="helpnow">I need to talk to someone now</button> <button class="btn" data-act="reqcheck">Request a private check-in</button> <button class="btn" data-act="toast" data-m="Private call to flight psychologist requested (simulated). Delay-aware: you will be told the next available slot.">Private call with flight psychologist</button></div>
+ <div class="grid g2" style="margin-top:14px"><div class="card"><h3>How are you feeling right now?</h3><div class="moods">${mb}</div>${reply}<h4 style="margin-top:12px">Recent check-ins</h4>${hist}</div>
+ <div class="card"><h3>Breathing reset</h3>${bt}</div>
+ ${sig}
+ <div class="card"><h3>Stay connected</h3><ul class="clean"><li><button class="btn" data-act="toast" data-m="Message to family queued. It sends when the link is available (simulated).">Message family</button> Deep-space delay: record and send.</li><li><button class="btn" data-act="toast" data-m="Crew dinner reminder set for tonight (simulated).">Plan a crew meal</button> Shared meals lift mood and appetite.</li><li><button class="btn" data-act="toast" data-m="Window-view break reminder set (simulated).">Schedule a window break</button> Earth-view time, 10 minutes.</li><li><button class="btn" data-act="toast" data-m="Photos and playlist from home opened (simulated).">Open care package from home</button> Music, photos, messages.</li></ul></div>
+ <div class="card"><h3>Small routines that help</h3><ul class="clean"><li>Keep a steady sleep window (your sleep is the best early signal).</li><li>Get your exercise in. It lifts mood and protects bone and muscle.</li><li>Eat the planned meals. Low intake and low mood feed each other.</li><li>Name it: tell a crewmate "rough day". Buddy check-ins share no medical details.</li></ul></div>
+ <div class="card"><h3>Who sees what</h3><p class="small">Mood entries: you and the crew medical officer. Buddy: only a gentle "check in today" note. Mission Control: only on RED, or if you ask.</p><p class="small mut">A support aid, not a diagnosis or therapy. Content to be reviewed by flight psychologists. MOCK DATA.</p></div></div>`;
+}
+let breathT=null;
+function breathTick(){
+ const c=$("bcircle"),t=$("btext");if(!S.breath||!c||!t)return;
+ const e=(Date.now()-S.breathStart)/1000%14;
+ if(e<4){c.className="breath in";t.textContent="Breathe in"}else if(e<8){t.textContent="Hold"}else{c.className="breath out";t.textContent="Breathe out"}
+}
+
+function renderCrew(){
+ const sts=AST.map(a=>S.st[a]).sort((x,y)=>li(y.level)-li(x.level)||x.score-y.score);
+ const cnt=l=>sts.filter(x=>x.level===l).length,avg=Math.round(sts.reduce((t,x)=>t+x.score,0)/sts.length);
+ const off=sts.reduce((t,x)=>t+FAST.concat(SLOW).filter(g=>sigInfo(x,g).level==="OFFLINE").length,0);
+ const ck=sts.filter(x=>x.checkin).length;
+ const sum=`<div class="grid g5">${["GREEN","YELLOW","ORANGE","RED"].map(l=>`<div class="m" style="border-color:${COLOR[l]}"><span>${dot(l)}${WORD[l]}</span><b style="color:${COLOR[l]}">${cnt(l)}</b><span>astronauts</span></div>`).join("")}<div class="m"><span>Crew average score</span><b>${avg}</b><span>${ck} check-in flag(s), ${off} sensor(s) offline</span></div></div>`;
+ const cards=sts.map(x=>{
+  const a=x.a,lv=organLevels(x),hs=healthScore(x),drv=hs.parts.filter(q=>q[2]>0).sort((m,n)=>n[2]-m[2]).slice(0,3);
+  const ev=S.sim.events.filter(e=>e.a===a&&e.start<=S.sim.now).sort((m,n)=>n.start-m.start).slice(0,4).map(e=>`<span class="chip">${e.kind} ${mmdd(e.start)} ${hhmm(e.start)}</span>`).join("")||`<span class="mut small">none logged</span>`;
+  const key=["hr","spo2","bp_sys","sleep_hours","stress","intake_ratio"].map(g=>{const i=sigInfo(x,g);return tile(INFO[g][0],i.level==="OFFLINE"?"offline":`${fmt(g,i.value)} ${INFO[g][1]}`,"normal "+fmt(g,i.mu),i.level)}).join("");
+  const dots=Object.keys(lv).map(o=>`<span>${dot(lv[o])}${o}</span>`).join("");
+  const al=x.alerts.length?x.alerts.slice(0,2).map(alertCard).join(""):`<p class="mut">No active alerts. All signals within personal range.</p>`;
+  const who=x.level==="RED"?"Whole crew and Mission Control (simulated)":x.level==="ORANGE"?"Astronaut, crew medical officer, buddy "+BUDDY[a]+" (no details)":x.level==="YELLOW"?"Astronaut only (private nudge)":"Nobody";
+  return`<div class="card ccard" style="--c:${COLOR[x.level]}"><div class="top"><div><h3>${a}</h3>${badge(x.level)}</div><div style="text-align:right"><div class="big" style="color:${COLOR[x.level]}">${x.score}</div><span class="mut small">health score /100</span></div></div>
+  <h4 style="margin-top:10px">Why this score</h4><p class="small">${drv.length?drv.map(q=>`${INFO[q[0]][0]} (-${q[2]})`).join(", "):"No signal is pulling the score down."}</p>
+  <h4>Key readings (vs personal normal)</h4><div class="grid g3" style="gap:8px">${key}</div>
+  <h4 style="margin-top:10px">Organ status</h4><div class="org-dots">${dots}</div>
+  <h4 style="margin-top:10px">Active alerts</h4>${al}
+  <h4>Who is told</h4><p class="small">${who}${x.checkin?". Check-in flag: crew medical officer only.":"."}</p>
+  <h4>Logged context</h4>${ev}
+  <p style="margin-top:10px"><button class="btn" data-act="openA" data-v="${a}">Open in live demo</button></p></div>`}).join("");
+ const sigs=FAST.concat(SLOW);
+ const head=sts.map(x=>`<th>${x.a}</th>`).join("");
+ const rows=sigs.map(g=>`<tr><th>${INFO[g][0]}</th>${sts.map(x=>{const i=sigInfo(x,g);return`<td class="c" style="--c:${COLOR[i.level]||COLOR.GREEN}">${i.level==="OFFLINE"?"offline":fmt(g,i.value)+" "+INFO[g][1]}</td>`}).join("")}</tr>`).join("");
+ const logs=S.alertsLog.slice(0,8).map(l=>`<tr><td>${hhmm(l.ts)}</td><td>${l.a}</td><td>${dot(l.level)}${l.level}</td><td>${l.title}</td><td>${l.pending?"queued":"sent"}</td></tr>`).join("")||`<tr><td colspan="5" class="mut">No alerts logged yet.</td></tr>`;
+ const notes=S.notes.slice(0,6).map(n=>`<tr><td>${hhmm(n.ts)}</td><td>${n.rec}</td><td>${n.msg}</td><td>${n.pending?"queued":"sent"}</td></tr>`).join("")||`<tr><td colspan="4" class="mut">No buddy or check-in notes yet.</td></tr>`;
+ $("crewpanel").innerHTML=`<h2>Crew overview</h2><p class="mut">Who needs attention first, worst level first. Medical-officer view, MOCK DATA. Each astronaut is compared with their own 14-day baseline.</p>${sum}<div class="cgrid" style="margin-top:14px">${cards}</div>
+ <h2 style="margin-top:18px">All signals, side by side</h2><div class="card scroll"><table class="hm"><tr><th>Signal</th>${head}</tr>${rows}</table></div>
+ <div class="grid g2" style="margin-top:14px"><div><h3>Recent alerts</h3><div class="card scroll"><table><tr><th>Time</th><th>Who</th><th>Level</th><th>Alert</th><th>Status</th></tr>${logs}</table></div></div><div><h3>Check-ins and buddy notes</h3><div class="card scroll"><table><tr><th>Time</th><th>To</th><th>Note</th><th>Status</th></tr>${notes}</table></div></div></div>
+ <p class="mut small">Buddies see only a gentle "check in today" note, never medical details. Thresholds are placeholders. Not a medical device.</p>`;
+}
+function renderPanel(){
+ const a=S.who,st=S.st[a];
+ $("subnav").innerHTML=SUBS.map(([k,l])=>`<button class="tab" data-act="sub" data-v="${k}" aria-selected="${k===S.sub}">${l}</button>`).join("");
+ const fn={body:()=>pBody(a,st),risk:()=>pRisk(st),mind:()=>pMind(a,st),support:()=>pSupport(a,st),nutrition:()=>pNutrition(a,st),alerts:()=>pAlerts(a),emergency:pEmergency,data:()=>pData(a,st)}[S.sub];
+ $("panel").innerHTML=fn();
+}
+function render(){
+ renderStatus();if(S.sec==="crew")renderCrew();
+ const ae=document.activeElement;if(S.sub!=="support"&&!(ae&&ae.tagName==="SELECT"&&$("panel").contains(ae)))renderPanel();
+}
+function tickOnce(){S.sim.tick();runEngine();render()}
+function setSec(v){
+ S.sec=v;["demo","crew","evi"].forEach(k=>$("s-"+k).hidden=k!==v);
+ document.querySelectorAll("#topnav .tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));
+ if(v==="crew")renderCrew();window.scrollTo(0,0);
+}
+function act(n,el){
+ const a=S.who;
+ if(n==="sec"||n==="goto")setSec(el.dataset.v);
+ else if(n==="sub"){S.sub=el.dataset.v;renderPanel()}
+ else if(n==="organ"){S.organ=el.dataset.v;S.sub="body";renderPanel()}
+ else if(n==="adv"){for(let i=0;i<12;i++){S.sim.tick();runEngine()}render()}
+ else if(n==="emerg"){S.sim.startEmergency("D. Okafor");S.tEmerg=null;tickOnce();toast("Simulated emergency started for D. Okafor.")}
+ else if(n==="drop"){S.sim.dropSensor(a,$("grp").value);tickOnce()}
+ else if(n==="restore"){S.sim.restoreSensor(a,$("grp").value);tickOnce()}
+ else if(n==="conn"){S.conn=online()?"OFFLINE":"LIVE";if(online()){const k=pending();S.notes.forEach(x=>x.pending=false);S.alertsLog.forEach(x=>x.pending=false);toast(`Reconnected: ${k} queued item(s) synced (simulated).`)}else toast("Offline: alerts and notes are queued locally.");render()}
+ else if(n==="reset"){init();S.who=$("who").value;render();toast("Demo reset.")}
+ else if(n==="dizzy"){S.sim.addEvent(a,"dizzy");runEngine();render()}
+ else if(n==="med"){S.sim.addEvent(a,"medication");render()}
+ else if(n==="skip"){S.sim.addEvent(a,"skipped_meal");render()}
+ else if(n==="checkin"){logNote(BUDDY[a],a,`${BUDDY[a]} checked in on ${a}.`);render()}
+ else if(n==="conscious"){S.responded=true;render()}
+ else if(n==="goemerg"){setSec("demo");S.sub="emergency";renderPanel()}
+
+ else if(n==="mood"){const v=+el.dataset.v;(S.mood[a]=S.mood[a]||[]).forEach(x=>x.fresh=false);S.mood[a].unshift({v,ts:S.sim.now,fresh:true});renderPanel()}
+ else if(n==="reqcheck"){logNote("Crew medical officer",a,`${a} requested a private check-in.`);toast("Private check-in requested. Only the crew medical officer is told (simulated).");renderPanel()}
+ else if(n==="helpnow"){logNote("Crew medical officer",a,`${a} asked to talk to someone now.`);toast("Help is on the way: crew medical officer alerted privately (simulated). Stay with someone you trust.");renderPanel()}
+ else if(n==="breath"){S.breath=!S.breath;S.breathStart=Date.now();clearInterval(breathT);renderPanel();if(S.breath){breathT=setInterval(breathTick,500);breathTick()}}
+ else if(n==="openA"){S.who=el.dataset.v;$("who").value=S.who;S.sub="body";setSec("demo");renderPanel()}
+ else if(n==="toast")toast(el.dataset.m);
+ else if(n==="download"){const d=S.sim.fast[a],csv=["timestamp_utc,"+FAST.concat("bp_dia").join(",")].concat(d.map(r=>iso(r.t)+","+FAST.concat("bp_dia").map(s=>Number.isNaN(r[s])?"":r[s].toFixed(2)).join(","))).join("\n"),u=URL.createObjectURL(new Blob([csv],{type:"text/csv"})),l=document.createElement("a");l.href=u;l.download=a.replace(/\W+/g,"_")+"_readings_SIMULATED.csv";l.click()}
+}
+document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closest("[data-act]");if(el)act(el.dataset.act,el)});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("hit")){e.preventDefault();act("organ",e.target)}});
+document.addEventListener("change",e=>{
+ const t=e.target;
+ if(t.id==="who"){S.who=t.value;renderPanel()}
+ else if(t.id==="live")S.live=t.checked;
+ else if(t.id==="speed")S.speed=+t.value;
+ else if(t.id==="snd"){S.sound=t.checked;if(S.sound)beep()}
+ else if(t.dataset&&t.dataset.chg==="trend"){S.trendSig=t.value;renderPanel()}
+ else if(t.dataset&&t.dataset.chg==="rad"){S.rad=t.checked;renderPanel()}
+ else if(t.dataset&&t.dataset.chg==="consent"){S.consent[S.who]=t.checked}
+});
+function boot(){
+ $("who").innerHTML=AST.map(a=>`<option>${a}</option>`).join("");
+ init();render();
+ setInterval(()=>{
+  const now=Date.now();
+  if(S.live&&now-S.lastTick>=S.speed*1000-80){S.lastTick=now;tickOnce()}
+  else{renderStatus();if(S.sub==="emergency"&&S.sec==="demo"){const ae=document.activeElement;if(!(ae&&ae.tagName==="SELECT"))renderPanel()}}
+ },1000);
+}
+boot();
+
+</script>
+</body>
+</html>
